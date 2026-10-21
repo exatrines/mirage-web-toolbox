@@ -6,6 +6,7 @@
   const defaultBorder = '#F280B6';
   const defaultBackground = '#ffffff';
   const storageKey = 'mirage-tools.banners';
+  const savedImageNote = 'Saved image (used only on this device)';
   const tooClose = 'The text is too close to the author name. Shorten it.';
   const bannerKeys = ['title', 'contents', 'author', 'copyright', 'border', 'background', 'library', 'imageId', 'imageSrc', 'iconSrc', 'zoom', 'position'];
   let generation = 0;
@@ -223,11 +224,6 @@
     const token = generation;
     loading = loading.then(() => noteApplied(message, token));
   }
-  function applySaved(id) {
-    const item = readStore().find(entry => entry.id === id);
-    if (!item) return;
-    applyState(item.state, `Loaded "${item.name}".`, 'Saved image (used only on this device)');
-  }
 
   function readStore() {
     try {
@@ -237,12 +233,9 @@
       return [];
     }
   }
-  function writeStore(items) {
-    localStorage.setItem(storageKey, JSON.stringify({ items }));
-  }
   function persist(items) {
     try {
-      writeStore(items);
+      localStorage.setItem(storageKey, JSON.stringify({ items }));
       return true;
     } catch (error) {
       toast('Could not save. This browser is out of space.', 'error');
@@ -255,16 +248,30 @@
   }
   function renderSaved(selected) {
     const load = $('load');
+    const items = readStore();
     const keep = selected ?? load.value;
-    load.replaceChildren(new Option('New Preset', ''));
-    for (const item of readStore()) load.append(new Option(item.name, item.id));
-    load.value = [...load.options].some(option => option.value === keep) ? keep : '';
+    if (!items.length) {
+      load.replaceChildren(new Option('-', ''));
+      load.value = '';
+      return;
+    }
+    load.replaceChildren(...items.map(item => new Option(item.name, item.id)));
+    load.value = items.some(item => item.id === keep) ? keep : items[0].id;
   }
-  function addSet(state) {
-    const entry = { id: crypto.randomUUID(), name: setName(state.title), state };
+  function addSet(state, name = state.title) {
+    const entry = { id: crypto.randomUUID(), name: setName(name), state };
     if (!persist([entry, ...readStore()])) return null;
     renderSaved(entry.id);
     return entry;
+  }
+  function showStored(item, message = '') {
+    renderSaved(item.id);
+    applyState(item.state, message, savedImageNote);
+  }
+  function showBlank() {
+    renderSaved('');
+    openNewPreset();
+    remember();
   }
 
   function bannerFile(data) {
@@ -278,16 +285,16 @@
     try {
       data = JSON.parse(text);
     } catch {
-      toast('Clipboard is not a banner.', 'error');
-      return;
+      data = null;
     }
     const parsed = bannerFile(data);
     if (!parsed) {
       toast('Clipboard is not a banner.', 'error');
       return;
     }
-    toast('Pasted.');
     applyState(parsed.state, '', 'Pasted image (used only on this device)');
+    const name = typeof parsed.name === 'string' && parsed.name.trim() ? parsed.name : undefined;
+    if (addSet(snapshot(), name)) toast('Added.');
   }
 
   function plain(tag, className, value) {
@@ -309,15 +316,46 @@
     clone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
     return clone;
   }
+  async function savePng() {
+    $('save').disabled = true;
+    toast('Creating image…');
+    try {
+      await loading;
+      await document.fonts.ready;
+      if (!fits()) { toast('The text does not fit. Shorten the title or contents.', 'error'); return; }
+      const host = document.createElement('div');
+      host.style.cssText = 'position:fixed;left:-12000px;top:0;width:1200px;height:630px;';
+      const node = captureNode();
+      host.append(node);
+      document.body.append(host);
+      try {
+        embeddedFonts ??= htmlToImage.getFontEmbedCSS($('banner'));
+        const blob = await htmlToImage.toBlob(node, {
+          width: 1200, height: 630, pixelRatio: 1,
+          fontEmbedCSS: await embeddedFonts, backgroundColor: $('background').value
+        });
+        if (!blob) throw new Error('PNG generation returned no image');
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url; link.download = `splatoon-${preset().slug}-preset.png`;
+        link.click(); setTimeout(() => URL.revokeObjectURL(url), 60000);
+        toast('PNG saved.');
+      } finally {
+        host.remove();
+      }
+    } catch (error) {
+      toast('Could not save. Reload the page and try again.', 'error');
+      embeddedFonts = undefined;
+      console.error(error);
+    } finally { $('save').disabled = false; }
+  }
 
   $('library').replaceChildren(...window.bannerPresets.map(p => new Option(p.title, p.slug)));
   const initial = new URLSearchParams(location.search).get('preset');
   if (window.bannerPresets.some(p => p.slug === initial)) $('library').value = initial;
-  renderLibrary();
-  defaults();
-  chooseLibrary(preset().default);
-  remember();
-  renderSaved();
+  const first = readStore()[0];
+  if (first) showStored(first);
+  else showBlank();
 
   $('library').addEventListener('change', () => {
     renderLibrary();
@@ -334,8 +372,9 @@
   $('delete-set').addEventListener('click', () => {
     const id = $('load').value;
     if (id && !persist(readStore().filter(item => item.id !== id))) return;
-    if (id) renderSaved('');
-    openNewPreset();
+    const next = readStore()[0];
+    if (next) showStored(next);
+    else showBlank();
     toast('Deleted.');
   });
   $('editor').addEventListener('submit', event => {
@@ -353,11 +392,8 @@
     toast('Saved.');
   });
   $('load').addEventListener('change', () => {
-    if ($('load').value) applySaved($('load').value);
-    else {
-      openNewPreset();
-      toast('Loaded "New Preset".');
-    }
+    const item = readStore().find(entry => entry.id === $('load').value);
+    if (item) applyState(item.state, `Loaded "${item.name}".`, savedImageNote);
   });
 
   function toggleCard(card, hit) {
@@ -399,7 +435,6 @@
       loading = setImage(src);
     });
   });
-
   $('copy-json').addEventListener('click', async () => {
     const payload = { name: $('title').value.trim(), ...snapshot() };
     try {
@@ -418,37 +453,5 @@
       console.error(error);
     }
   });
-  $('save').addEventListener('click', async () => {
-    $('save').disabled = true;
-    toast('Creating image…');
-    try {
-      await loading;
-      await document.fonts.ready;
-      if (!fits()) { toast('The text does not fit. Shorten the title or contents.', 'error'); return; }
-      const host = document.createElement('div');
-      host.style.cssText = 'position:fixed;left:-12000px;top:0;width:1200px;height:630px;';
-      const node = captureNode();
-      host.append(node);
-      document.body.append(host);
-      try {
-        embeddedFonts ??= htmlToImage.getFontEmbedCSS($('banner'));
-        const blob = await htmlToImage.toBlob(node, {
-          width: 1200, height: 630, pixelRatio: 1,
-          fontEmbedCSS: await embeddedFonts, backgroundColor: $('background').value
-        });
-        if (!blob) throw new Error('PNG generation returned no image');
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url; link.download = `splatoon-${preset().slug}-preset.png`;
-        link.click(); setTimeout(() => URL.revokeObjectURL(url), 60000);
-        toast('PNG saved.');
-      } finally {
-        host.remove();
-      }
-    } catch (error) {
-      toast('Could not save. Reload the page and try again.', 'error');
-      embeddedFonts = undefined;
-      console.error(error);
-    } finally { $('save').disabled = false; }
-  });
+  $('save').addEventListener('click', savePng);
 })();
