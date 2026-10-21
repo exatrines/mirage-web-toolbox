@@ -154,11 +154,6 @@
     renderLibrary();
     chooseLibrary(preset().default);
   }
-  function remember() {
-    const url = new URL(location.href);
-    url.searchParams.set('preset', preset().slug);
-    history.replaceState(null, '', url);
-  }
   function snapshot() {
     const pressed = $('image-list').querySelector('[aria-pressed="true"]');
     return {
@@ -209,7 +204,6 @@
     markIcon();
     paint();
     geometry();
-    remember();
     const known = preset().backgrounds.some(b => b.id === state.imageId);
     const imageSrc = dataImage(state.imageSrc);
     if (imageSrc) {
@@ -271,7 +265,6 @@
   function showBlank() {
     renderSaved('');
     openNewPreset();
-    remember();
   }
 
   function bannerFile(data) {
@@ -351,8 +344,6 @@
   }
 
   $('library').replaceChildren(...window.bannerPresets.map(p => new Option(p.title, p.slug)));
-  const initial = new URLSearchParams(location.search).get('preset');
-  if (window.bannerPresets.some(p => p.slug === initial)) $('library').value = initial;
   const first = readStore()[0];
   if (first) showStored(first);
   else showBlank();
@@ -360,7 +351,6 @@
   $('library').addEventListener('change', () => {
     renderLibrary();
     chooseLibrary(preset().default);
-    remember();
   });
   $('add-set').addEventListener('click', () => {
     openNewPreset();
