@@ -1,1 +1,1 @@
-https://exatrines.github.io/mirage-tools/
+https://exatrines.github.io/web-tools/

@@ -1,0 +1,397 @@
+.image-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: 0.45rem;
+  margin-top: 0.55rem;
+  max-height: 20rem;
+  overflow: auto;
+}
+
+.image-option {
+  display: grid;
+  gap: 0.25rem;
+  min-height: 0;
+  padding: 0.3rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  text-align: left;
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink-soft);
+}
+
+.image-option img {
+  width: 100%;
+  height: 3.2rem;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.image-option[aria-pressed="true"] {
+  border-color: var(--pink);
+  box-shadow: 0 0 0 1px var(--pink);
+}
+
+.icon-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 0;
+  padding: 0.3rem 0.75rem 0.3rem 0.3rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  text-align: left;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.icon-option img {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+
+.icon-option[aria-pressed="true"] {
+  border-color: var(--pink);
+  box-shadow: 0 0 0 1px var(--pink);
+}
+
+.swatch {
+  position: relative;
+  display: block;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: none;
+  border: 1px solid rgba(18, 18, 18, 0.18);
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.swatch:focus-within {
+  outline: 2px solid var(--pink);
+  outline-offset: 2px;
+}
+
+.swatch input[type="color"] {
+  position: absolute;
+  top: -30%;
+  left: -30%;
+  width: 160%;
+  height: 160%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.swatch input[type="color"]:focus-visible {
+  outline: none;
+}
+
+.swatch input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.swatch input[type="color"]::-webkit-color-swatch,
+.swatch input[type="color"]::-moz-color-swatch {
+  border: 0;
+}
+
+.color-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.color-field:first-child {
+  margin-top: 0;
+}
+
+.save-png {
+  width: 100%;
+  margin-top: 1.15rem;
+}
+
+.icon-actions {
+  display: flex;
+  flex: none;
+  gap: 0.45rem;
+}
+
+.icon-actions button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-height: 0;
+  padding: 0;
+  flex: none;
+  line-height: 0;
+}
+
+.icon-actions svg {
+  display: block;
+  height: 1rem;
+  width: auto;
+  fill: currentColor;
+}
+
+.toast {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 6;
+  margin: 0;
+  max-width: min(28rem, calc(100% - 2rem));
+  padding: 0.45rem 0.9rem 0.5rem;
+  border-radius: 0 0 10px 10px;
+  color: #fff;
+  font-size: 0.84rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+  transition: transform 0.35s var(--ease);
+}
+
+.toast.info {
+  background: var(--ink);
+}
+
+.toast.error {
+  background: #b4234a;
+}
+
+.toast.is-in {
+  transform: translate(-50%, 0);
+}
+
+.set-bar {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
+.set-bar select {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+}
+
+.icon-tip {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 50%;
+  z-index: 2;
+  padding: 0.18rem 0.45rem;
+  border-radius: 6px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 4px);
+  transition: opacity 0.2s ease, transform 0.25s var(--ease);
+}
+
+.icon-actions button:hover .icon-tip,
+.icon-actions button:focus-visible .icon-tip {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.edit-card {
+  margin-top: 0.85rem;
+  padding: 1rem 1.1rem 1.1rem;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.edit-card[hidden] {
+  display: none;
+}
+
+.card-label {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16.5rem;
+  gap: 1.75rem;
+  align-items: start;
+  margin-top: 1rem;
+}
+
+.side {
+  position: sticky;
+  top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.2rem 1.1rem;
+  backdrop-filter: blur(10px);
+  min-width: 0;
+}
+
+.upload {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  margin-top: 0.85rem;
+  padding: 0 1rem;
+  border: 1px solid rgba(18, 18, 18, 0.18);
+  border-radius: 8px;
+  background: #fff;
+  text-align: center;
+  cursor: pointer;
+  color: var(--pink-deep);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.upload:hover,
+.upload:focus-within {
+  background: var(--pink-soft);
+  border-color: transparent;
+}
+
+.upload input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hint {
+  margin: 0.45rem 0 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.range-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.range-row output {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.image-option:hover,
+.icon-option:hover {
+  background: #fff;
+}
+
+.preview-panel {
+  min-width: 0;
+}
+
+#preview-slot {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(18, 18, 18, 0.06);
+}
+
+#preview-scale {
+  width: 1200px;
+  transform-origin: top left;
+}
+
+@media (max-width: 1000px) {
+  .workspace {
+    grid-template-columns: minmax(0, 1fr) 15rem;
+    gap: 1.1rem;
+  }
+
+  .panel {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .workspace {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .set-bar {
+    flex-wrap: wrap;
+  }
+
+  .set-bar select {
+    flex: 1 1 100%;
+  }
+
+  .preview-panel,
+  .side {
+    position: static;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-tip,
+  .toast {
+    transition: none;
+  }
+}
+
+/* Fixed output geometry: preview and PNG use the same HTML/CSS. */
+.banner{position:relative;width:1200px;height:630px;overflow:hidden;background:#fff;color:#121212;font-family:var(--font);--banner-border:#F280B6}.banner::after{content:"";position:absolute;left:0;right:0;bottom:0;height:8px;background:var(--banner-border)}.banner__media{position:absolute;left:48px;right:48px;top:24px;height:352px;overflow:hidden;background:var(--banner-border)}.banner__image-clip{position:absolute;inset:2px;overflow:hidden}.banner__background{display:block;width:100%;height:100%;object-fit:cover;object-position:center 50%;transform:scale(1.06)}.banner__copy{position:absolute;left:48px;top:400px;max-width:1104px}.banner h2{font:800 36px/1.35 "M PLUS Rounded 1c","Noto Sans JP",sans-serif;letter-spacing:.01em;margin:0;overflow-wrap:anywhere;white-space:pre-wrap}.banner__subtitle{margin:9.6px 0 0;font:400 20px/1.5 var(--font);color:#3d3a39;overflow-wrap:anywhere;white-space:pre-wrap}.banner__category{position:absolute;right:48px;bottom:24px;display:flex;align-items:center;gap:10.8px;margin:0;font:700 22px/1.2 var(--font);color:#3d3a39;max-width:1104px}.banner__category img{display:block;width:36px;height:36px;object-fit:contain;border-radius:50%;border:1px solid var(--banner-border);flex-shrink:0}.banner__brand{position:absolute;right:60px;bottom:266px;font:400 22px/1.25 var(--font);display:flex;flex-direction:column;align-items:flex-end}.banner__brand small{font:400 12px/1.25 var(--font);color:rgba(255,255,255,.7);text-shadow:0 1px 2px rgba(0,0,0,.3);white-space:nowrap}
+.banner button{border:0;padding:0;background:none;border-radius:0;cursor:pointer;line-height:0;min-height:0}
+.banner button:hover{background:none}
+.banner__copy{width:1104px}
+.banner__image-hit{position:absolute;inset:0}
+.banner__icon-hit{flex:none}
+.banner__image-hit[aria-expanded="true"] .banner__image-clip,.banner__icon-hit[aria-expanded="true"] img{outline:2px solid #fff;outline-offset:-4px}
+.banner textarea,.banner input[type="text"]{width:100%;margin:0;padding:0;border:0;border-radius:0;background:transparent;color:inherit;resize:none;overflow:hidden;box-shadow:none}
+#title{display:block;font:800 36px/1.35 "M PLUS Rounded 1c","Noto Sans JP",sans-serif;letter-spacing:.01em;color:#121212;min-height:calc(36px * 1.35);white-space:pre-wrap;overflow-wrap:anywhere}
+#contents{display:block;margin:9.6px 0 0;font:400 20px/1.5 var(--font);color:#3d3a39;min-height:calc(20px * 1.5);white-space:pre-wrap;overflow-wrap:anywhere}
+#author{width:auto;max-width:1057px;font:700 22px/1.2 var(--font);color:#3d3a39}
+#copyright{width:auto;max-width:480px;font:400 12px/1.25 var(--font);color:rgba(255,255,255,.7);text-align:right;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.banner textarea:focus-visible,.banner input:focus-visible{border:0;box-shadow:none;outline:2px solid rgba(232,79,138,.55);outline-offset:2px}
+

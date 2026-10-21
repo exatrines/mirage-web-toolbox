@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Edit a banner for a Splatoon preset page and save it as a PNG.">
+<meta name="theme-color" content="#faf9f8">
+<title>Banner Maker — mirage tools</title>
+<link rel="icon" href="../assets/avatar.jpg" type="image/jpeg">
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
+<link rel="stylesheet" href="../app.css">
+<link rel="stylesheet" href="app.css">
+<script defer src="../vendor/html-to-image.js"></script>
+<script defer src="presets.js"></script>
+<script defer src="app.js"></script>
+</head>
+<body>
+<p id="toast" class="toast" role="status" aria-live="polite"></p>
+<div class="atmosphere" aria-hidden="true">
+<div class="glow glow-a"></div>
+<div class="glow glow-b"></div>
+<div class="grain"></div>
+</div>
+<div class="page page-tool">
+<header class="site-header">
+<div class="brand">
+<a class="brand-mark" href="https://exatrines.github.io/" aria-label="back to hub"><img src="../assets/avatar.jpg" alt="" width="36" height="36"></a>
+<span class="brand-tip" aria-hidden="true">back to hub</span>
+<a class="brand-path" href="../">/web-tools</a>
+<span class="brand-page">Banner Maker</span>
+</div>
+<nav class="nav">
+<a href="https://exatrines.github.io/">mirage hub</a>
+<a href="https://github.com/exatrines/web-tools">GitHub</a>
+</nav>
+</header>
+<main>
+<form id="editor">
+<div class="set-bar">
+<select id="load" aria-label="Sets"></select>
+<!-- Icons: Font Awesome Free, CC BY 4.0 -->
+<div class="icon-actions">
+<button id="add-set" type="button" aria-label="Add"><svg viewBox="0 0 448 512" aria-hidden="true"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg><span class="icon-tip" aria-hidden="true">Add</span></button>
+<button id="duplicate-set" type="button" aria-label="Duplicate"><svg viewBox="0 0 512 512" aria-hidden="true"><path d="M288 448L64 448l0-224 64 0 0-64-64 0c-35.3 0-64 28.7-64 64L0 448c0 35.3 28.7 64 64 64l224 0c35.3 0 64-28.7 64-64l0-64-64 0 0 64zm-64-96l224 0c35.3 0 64-28.7 64-64l0-224c0-35.3-28.7-64-64-64L224 0c-35.3 0-64 28.7-64 64l0 224c0 35.3 28.7 64 64 64z"/></svg><span class="icon-tip" aria-hidden="true">Duplicate</span></button>
+<button id="delete-set" type="button" aria-label="Delete"><svg viewBox="0 0 448 512" aria-hidden="true"><path d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg><span class="icon-tip" aria-hidden="true">Delete</span></button>
+<button id="store" type="submit" aria-label="Save"><svg viewBox="0 0 448 512" aria-hidden="true"><path d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-242.7c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32L64 32zm0 96c0-17.7 14.3-32 32-32l192 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32L96 224c-17.7 0-32-14.3-32-32l0-64zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg><span class="icon-tip" aria-hidden="true">Save</span></button>
+<button id="copy-json" type="button" aria-label="Export"><svg viewBox="0 0 576 512" aria-hidden="true"><path d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 128-168 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l168 0 0 112c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 64zM384 336l0-48 110.1 0-39-39c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l80 80c9.4 9.4 9.4 24.6 0 33.9l-80 80c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l39-39L384 336zm0-208l-128 0L256 0 384 128z"/></svg><span class="icon-tip" aria-hidden="true">Export</span></button>
+<button id="paste-json" type="button" aria-label="Import"><svg viewBox="0 0 512 512" aria-hidden="true"><path d="M128 64c0-35.3 28.7-64 64-64L352 0l0 128c0 17.7 14.3 32 32 32l128 0 0 288c0 35.3-28.7 64-64 64l-256 0c-35.3 0-64-28.7-64-64l0-112 174.1 0-39 39c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l39 39L128 288l0-224zm0 224l0 48L24 336c-13.3 0-24-10.7-24-24s10.7-24 24-24l104 0zM512 128l-128 0L384 0 512 128z"/></svg><span class="icon-tip" aria-hidden="true">Import</span></button>
+</div>
+</div>
+<div class="workspace">
+<section class="preview-panel" aria-label="Banner preview"><div id="preview-slot"><div id="preview-scale">
+<article id="banner" class="banner">
+<div class="banner__media"><button type="button" id="image-hit" class="banner__image-hit" aria-expanded="false" aria-label="Edit image"><span class="banner__image-clip"><img class="banner__background" alt=""></span></button></div>
+<section class="banner__copy">
+<textarea id="title" rows="1" maxlength="150" aria-label="Title" spellcheck="false" autocomplete="off"></textarea>
+<textarea id="contents" rows="1" maxlength="250" aria-label="Contents" spellcheck="false" autocomplete="off"></textarea>
+</section>
+<p class="banner__category"><button type="button" id="icon-hit" class="banner__icon-hit" aria-expanded="false" aria-label="Edit author icon"><img id="banner-icon" src="../assets/avatar.jpg" alt=""></button><input id="author" type="text" value="mirage hub" maxlength="40" aria-label="Author name" spellcheck="false" autocomplete="off"></p>
+<footer class="banner__brand"><input id="copyright" type="text" value="© SQUARE ENIX" maxlength="80" aria-label="Copyright" spellcheck="false" autocomplete="off"></footer>
+</article>
+</div></div>
+<div id="image-card" class="edit-card" hidden>
+<p class="card-label">Image</p>
+<label for="library">Image library</label><select id="library"></select>
+<div id="image-list" class="image-list" aria-label="Images"></div>
+<label class="upload" for="upload">Upload image<input id="upload" type="file" accept="image/png,image/jpeg,image/webp"></label>
+<p id="image-info" class="hint">Images stay in the browser.</p>
+<div class="range-row"><label for="zoom">Zoom</label><output id="zoom-value">106%</output></div><input id="zoom" type="range" min="100" max="180" value="106">
+<div class="range-row"><label for="position">Vertical position</label><output id="position-value">50%</output></div><input id="position" type="range" min="0" max="100" value="50">
+</div>
+<div id="icon-card" class="edit-card" hidden>
+<p class="card-label">Author icon</p>
+<button id="icon-default" type="button" class="icon-option" aria-pressed="true"><img src="../assets/avatar.jpg" alt=""><span>mirage default</span></button>
+<label class="upload" for="icon">Upload<input id="icon" type="file" accept="image/png,image/jpeg,image/webp"></label>
+</div>
+</section>
+<div class="side">
+<div class="panel">
+<label class="color-field">Background color<span class="swatch"><input id="background" type="color" value="#ffffff"></span></label>
+<label class="color-field">Border color<span class="swatch"><input id="border" type="color" value="#F280B6"></span></label>
+<button id="save" type="button" class="primary save-png">Save PNG</button>
+</div>
+</div>
+</div>
+</form>
+</main>
+<footer class="site-footer">
+<a class="back-link" href="../">← mirage tools</a>
+<span>© SQUARE ENIX</span>
+</footer>
+</div>
+</body>
+</html>
