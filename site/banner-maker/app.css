@@ -125,6 +125,21 @@
   margin-top: 1.15rem;
 }
 
+.panel .range-row {
+  margin-top: 0.9rem;
+}
+
+.panel .range-row label {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.panel input[type="range"] {
+  margin-top: 0.15rem;
+}
+
 .icon-actions {
   display: flex;
   flex: none;
@@ -389,8 +404,11 @@
 .banner__icon-hit{flex:none}
 .banner__image-hit[aria-expanded="true"] .banner__image-clip,.banner__icon-hit[aria-expanded="true"] img{outline:2px solid #fff;outline-offset:-4px}
 .banner textarea,.banner input[type="text"]{width:100%;margin:0;padding:0;border:0;border-radius:0;background:transparent;color:inherit;resize:none;overflow:hidden;box-shadow:none}
-#title{display:block;font:800 36px/1.35 "M PLUS Rounded 1c","Noto Sans JP",sans-serif;letter-spacing:.01em;color:#121212;min-height:calc(36px * 1.35);white-space:pre-wrap;overflow-wrap:anywhere}
-#contents{display:block;margin:9.6px 0 0;font:400 20px/1.5 var(--font);color:#3d3a39;min-height:calc(20px * 1.5);white-space:pre-wrap;overflow-wrap:anywhere}
+.banner{--banner-title-size:36px;--banner-contents-size:26px}
+.banner h2{font-size:var(--banner-title-size)}
+.banner__subtitle{font-size:var(--banner-contents-size)}
+#title{display:block;font:800 var(--banner-title-size)/1.35 "M PLUS Rounded 1c","Noto Sans JP",sans-serif;letter-spacing:.01em;color:#121212;min-height:calc(var(--banner-title-size) * 1.35);white-space:pre-wrap;overflow-wrap:anywhere}
+#contents{display:block;margin:9.6px 0 0;font:400 var(--banner-contents-size)/1.5 var(--font);color:#3d3a39;min-height:calc(var(--banner-contents-size) * 1.5);white-space:pre-wrap;overflow-wrap:anywhere}
 #author{width:auto;max-width:1057px;font:700 22px/1.2 var(--font);color:#3d3a39}
 #copyright{width:auto;max-width:480px;font:400 12px/1.25 var(--font);color:rgba(255,255,255,.7);text-align:right;text-shadow:0 1px 2px rgba(0,0,0,.3)}
 .banner textarea:focus-visible,.banner input:focus-visible{border:0;box-shadow:none;outline:2px solid rgba(232,79,138,.55);outline-offset:2px}

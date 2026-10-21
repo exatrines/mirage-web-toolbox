@@ -8,7 +8,7 @@
   const storageKey = 'mirage-tools.banners';
   const savedImageNote = 'Saved image (used only on this device)';
   const tooClose = 'The text is too close to the author name. Shorten it.';
-  const bannerKeys = ['title', 'contents', 'author', 'copyright', 'border', 'background', 'library', 'imageId', 'imageSrc', 'iconSrc', 'zoom', 'position'];
+  const bannerKeys = ['title', 'contents', 'author', 'copyright', 'border', 'background', 'library', 'imageId', 'imageSrc', 'iconSrc', 'zoom', 'position', 'titleSize', 'contentsSize'];
   let generation = 0;
   let loading = Promise.resolve();
   let embeddedFonts;
@@ -62,6 +62,10 @@
   function paint() {
     $('banner').style.setProperty('--banner-border', $('border').value);
     $('banner').style.backgroundColor = $('background').value;
+    $('banner').style.setProperty('--banner-title-size', `${$('title-size').value}px`);
+    $('banner').style.setProperty('--banner-contents-size', `${$('contents-size').value}px`);
+    $('title-size-value').textContent = `${$('title-size').value}px`;
+    $('contents-size-value').textContent = `${$('contents-size').value}px`;
     grow($('title'));
     grow($('contents'));
     fitField($('author'), 1057);
@@ -146,6 +150,8 @@
     markIcon();
     $('zoom').value = '106';
     $('position').value = '50';
+    $('title-size').value = '36';
+    $('contents-size').value = '26';
     paint();
     geometry();
   }
@@ -168,7 +174,9 @@
       imageSrc: pressed ? '' : (image.src.startsWith('data:') ? image.src : ''),
       iconSrc: $('banner-icon').src.startsWith('data:') ? $('banner-icon').src : '',
       zoom: $('zoom').value,
-      position: $('position').value
+      position: $('position').value,
+      titleSize: $('title-size').value,
+      contentsSize: $('contents-size').value
     };
   }
   function clamp(value, min, max, fallback) {
@@ -197,6 +205,8 @@
     else $('background').value = defaultBackground;
     $('zoom').value = clamp(state.zoom, 100, 180, '106');
     $('position').value = clamp(state.position, 0, 100, '50');
+    $('title-size').value = clamp(state.titleSize, 20, 64, '36');
+    $('contents-size').value = clamp(state.contentsSize, 12, 40, '26');
     $('icon').value = '';
     $('upload').value = '';
     const icon = dataImage(state.iconSrc);
@@ -406,6 +416,12 @@
     });
   }
   for (const id of ['border', 'background']) $(id).addEventListener('input', paint);
+  for (const id of ['title-size', 'contents-size']) {
+    $(id).addEventListener('input', () => {
+      paint();
+      toast(fits() ? '' : tooClose, 'error');
+    });
+  }
   for (const id of ['zoom', 'position']) $(id).addEventListener('input', geometry);
   $('icon-default').addEventListener('click', () => {
     $('icon').value = '';
