@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="mirageのWebツール集。Splatoonプリセットページ用のバナーを編集し、PNG画像として保存できます。">
+<meta name="theme-color" content="#F280B6"><title>バナーメーカー — mirage web toolbox</title>
+<link rel="icon" href="assets/avatar.jpg"><link rel="stylesheet" href="assets/fonts/fonts.css"><link rel="stylesheet" href="app.css">
+<script defer src="vendor/html-to-image.js"></script><script defer src="presets.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+<header class="site-header"><a class="wordmark" href="./"><img src="assets/avatar.jpg" alt="">mirage <span>web toolbox</span></a><a href="https://exatrines.github.io/">mirage hub ↗</a></header>
+<main>
+<div class="heading"><div><p class="eyebrow">IMAGE TOOLS / 01</p><h1>バナーメーカー</h1><p class="intro">コンテンツと背景を選んで、自分のバナーに。</p></div><span class="size-chip">1200 × 630 px</span></div>
+<div class="workspace">
+<form id="editor" class="panel">
+<fieldset><legend>コンテンツと背景</legend>
+<label for="preset">コンテンツ</label><select id="preset"></select>
+<label for="background">背景画像</label><select id="background"></select>
+<label class="upload" for="upload">自分の画像を使う<input id="upload" type="file" accept="image/png,image/jpeg,image/webp"></label><p id="image-info" class="hint">画像はブラウザ内で処理します。</p>
+<div class="range-row"><label for="zoom">拡大率</label><output id="zoom-value">106%</output></div><input id="zoom" type="range" min="100" max="180" value="106">
+<div class="range-row"><label for="position">画像の上下位置</label><output id="position-value">50%</output></div><input id="position" type="range" min="0" max="100" value="50">
+</fieldset>
+<fieldset><legend>文章</legend>
+<label for="title">タイトル</label><textarea id="title" rows="3" maxlength="150"></textarea>
+<label for="description">概要</label><textarea id="description" rows="4" maxlength="250"></textarea>
+<label for="signature">署名</label><input id="signature" type="text" value="mirage hub" maxlength="40">
+</fieldset>
+<div class="actions"><button id="save" type="button" class="primary">PNGを保存</button><button id="reset" type="button">このコンテンツを初期化</button></div>
+<p id="status" role="status" aria-live="polite">準備しています…</p>
+</form>
+<section class="preview-panel" aria-label="バナーのプレビュー"><div class="preview-toolbar"><span>PREVIEW</span><span>画像右下に © SQUARE ENIX を表示</span></div><div id="preview-slot"><div id="preview-scale">
+<article id="banner" class="banner">
+<div class="banner__media"><div class="banner__image-clip"><img class="banner__background" alt=""></div></div>
+<section class="banner__copy"><h2 id="banner-title"></h2><p class="banner__subtitle" id="banner-description"></p></section>
+<p class="banner__category"><img src="assets/avatar.jpg" alt=""><span id="banner-signature">mirage hub</span></p>
+<footer class="banner__brand"><small>© SQUARE ENIX</small></footer>
+</article>
+</div></div><p class="preview-note">背景の切り替えや文章の編集は、すぐにプレビューへ反映されます。</p></section>
+</div>
+</main>
+<footer class="site-footer"><span>mirage web toolbox</span><span>ゲーム画像 © SQUARE ENIX</span><a href="https://github.com/exatrines/mirage-web-toolbox">GitHub ↗</a></footer>
+</body></html>

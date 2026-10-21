@@ -1,0 +1,34 @@
+@font-face {
+  font-family: 'Figtree';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(./font-1.woff2) format('truetype');
+}
+@font-face {
+  font-family: 'M PLUS Rounded 1c';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(./font-2.woff2) format('truetype');
+}
+
+
+
+
+@font-face {
+  font-family: 'Figtree';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./figtree-regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./noto-regular.ttf) format('truetype');
+}
+
